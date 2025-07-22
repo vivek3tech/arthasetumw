@@ -10,9 +10,7 @@ FROM eclipse-temurin:17-jdk-alpine
 
 # Set a working directory
 WORKDIR /app
-
-# Copy the built jar (update the path if needed)
-COPY target/arthasetu-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/arthasetu-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose the port Cloud Run will listen on
 EXPOSE 8080
