@@ -1,4 +1,4 @@
-package com.fincodefusion.arthasetu.service;
+package com.fincodefusion.arthasetu.tools;
 
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.context.i18n.LocaleContextHolder;

@@ -16,7 +16,12 @@ public class OpenAIWebClientConfig  {
                 .temperature(0.7)
                 .build();
         String systemPrompt = """
-        You are a helpful assistant. make use of DateTimeTools  if asked about current date""";
+        please answer in short, simple and crisp statements
+        For Greetings say Hi There, how can I assist you in hindi language
+        You are a helpful assistant. make use of Bank Account tools  if asked about transfer money date
+        always reply in user prompt's language, use INR for amount balance and transfer
+        please answer only finance and investment related prompts for any unusual and abusive questions a reply please ask finance related questions""";
+
         return chatClientBuilder.defaultOptions(chatOptions).defaultSystem(systemPrompt).build();
     }
 
