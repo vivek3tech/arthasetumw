@@ -1,5 +1,8 @@
 package com.fincodefusion.arthasetu.tools;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fincodefusion.arthasetu.services.GlobalState;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.ai.tool.annotation.Tool;
@@ -53,6 +56,39 @@ public class BankAccountTools {
     String getCurrentDateTime() {
         System.out.println("getCurrentDateTime called");
         return LocalDateTime.now().atZone(LocaleContextHolder.getTimeZone().toZoneId()).toString();
+    }
+
+    @Tool(name="getTransactions", description = "Get all the transactions for the user")
+    String getTransactions() throws JsonProcessingException {
+        System.out.println("getTransactions called");
+        globalState.setAction("voice");
+        WebClient webClient = WebClient.create("https://arthasetunode-282482783617.asia-south1.run.app/");
+
+        String response = webClient.get()
+                .uri("/api/transactions")
+                .retrieve()
+                .bodyToMono(String.class).block();
+
+        // response = "Account balance for" +user+ " is 10000";
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode arrayNode = mapper.readTree(response);
+
+        StringBuilder result = new StringBuilder();
+
+        for (JsonNode transaction : arrayNode) {
+            String name = transaction.get("name").asText();
+            int amount = transaction.get("amount").asInt();
+            result.append(name)
+                    .append(" received ₹")
+                    .append(amount)
+                    .append(". ");
+        }
+
+        String formattedOutput = result.toString().trim();
+        System.out.println(formattedOutput);
+        System.out.println("getTransactions"+ result);
+
+        return formattedOutput;
     }
 
 
