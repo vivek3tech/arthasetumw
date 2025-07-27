@@ -1,36 +1,16 @@
 package com.fincodefusion.arthasetu.services;
 
-import lombok.Getter;
+import lombok.*;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
 
 @Component
+@Data
+@RequestScope
 public class GlobalState {
 
-    private static String globalAction = "voice";
-    private static String amount;
-    private static String contact;
+    private String globalAction = "voice";
+    private String amount;
+    private String contact;
 
-    public String getAction() {
-        return globalAction;
-    }
-
-    public void setAction(String globalMessage) {
-        this.globalAction = globalMessage;
-    }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
 }

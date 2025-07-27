@@ -8,21 +8,25 @@ import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
+@Service
 public class BankAccountTools {
 
-    GlobalState globalState = new GlobalState();
+    @Autowired
+    GlobalState globalState;
+
+    WebClient webClient = WebClient.create("https://arthasetunode-282482783617.asia-south1.run.app/");
 
 
     @Tool(name="getCurrentAccountBalance", description = "Get the current account balance, what is my account balance?")
     String getCurrentAccountBalance() {
         System.out.println("getCurrentAccountBalance called");
-        globalState.setAction("voice");
-        WebClient webClient = WebClient.create("https://arthasetunode-282482783617.asia-south1.run.app/");
+        globalState.setGlobalAction("voice");
 
         String response = webClient.get()
                 .uri("/api/balance")
@@ -45,7 +49,7 @@ public class BankAccountTools {
             String recipient
     ) {
         System.out.println("Transferred ₹" + amount + " to" + recipient);
-       globalState.setAction("transfer");
+       globalState.setGlobalAction("transfer");
        globalState.setAmount(Integer.valueOf(amount).toString());
        globalState.setContact(recipient);
        System.out.println("Transferred ₹" + globalState.getAmount() + " to " + globalState.getContact());
@@ -61,8 +65,8 @@ public class BankAccountTools {
     @Tool(name="getTransactions", description = "Get all the transactions for the user")
     String getTransactions() throws JsonProcessingException {
         System.out.println("getTransactions called");
-        globalState.setAction("voice");
-        WebClient webClient = WebClient.create("https://arthasetunode-282482783617.asia-south1.run.app/");
+        globalState.setGlobalAction("voice");
+
 
         String response = webClient.get()
                 .uri("/api/transactions")
