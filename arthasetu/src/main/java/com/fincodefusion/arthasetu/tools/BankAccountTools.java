@@ -22,7 +22,11 @@ public class BankAccountTools {
 
     WebClient webClient = WebClient.create("https://arthasetunode-282482783617.asia-south1.run.app/");
 
-
+    /**
+     * Retrieves the current account balance by making a GET request to the "/api/balance" endpoint.
+     * Sets the global action to "voice" before making the request.
+     * @return The account balance as a String.
+     */
     @Tool(name="getCurrentAccountBalance", description = "Get the current account balance, what is my account balance?")
     String getCurrentAccountBalance() {
         System.out.println("getCurrentAccountBalance called");
@@ -40,6 +44,13 @@ public class BankAccountTools {
         return response;
     }
 
+    /**
+     * Transfers the specified amount (in INR) to the given recipient's account.
+     * Updates the global state with transfer details.
+     * @param amount Amount to transfer in INR.
+     * @param recipient Recipient name.
+     * @return Confirmation message.
+     */
     @Tool(name="transferMoney", description = "Transfers the specified amount (in INR) to the given recipient's account. Use this when the user wants to send or transfer money to someone.")
     public String transferMoney(
             @Parameter(name = "amount", description = "Amount to transfer in INR")
@@ -56,12 +67,22 @@ public class BankAccountTools {
         return "Transferred";
     }
 
+    /**
+     * Gets the current date and time in the user's timezone.
+     * @return Current date and time as a String.
+     */
     @Tool(name="getCurrentDateTime", description = "Get the current date and time in the user's timezone")
     String getCurrentDateTime() {
         System.out.println("getCurrentDateTime called");
         return LocalDateTime.now().atZone(LocaleContextHolder.getTimeZone().toZoneId()).toString();
     }
 
+    /**
+     * Retrieves all transactions for the user by making a GET request to the "/api/transactions" endpoint.
+     * Formats the transaction details for output.
+     * @return Formatted transaction details as a String.
+     * @throws JsonProcessingException if the response cannot be parsed.
+     */
     @Tool(name="getTransactions", description = "Get all the transactions for the user")
     String getTransactions() throws JsonProcessingException {
         System.out.println("getTransactions called");
