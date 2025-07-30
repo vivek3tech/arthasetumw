@@ -1,13 +1,28 @@
 package com.fincodefusion.arthasetu.config;
 
 
-import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class OpenAIWebClientConfig  {
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                // Disable CSRF
+                .csrf(csrf -> csrf.disable())
+
+                // Disable CORS
+                .cors(cors -> cors.disable())
+
+                // Allow all requests (if required)
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+
+        return http.build();
+    }
 
  /*   @Bean
     public ChatClient chatClient(ChatClient.Builder chatClientBuilder) {
